@@ -1,0 +1,7 @@
+url,name,size
+www.site1.com,Peter,M
+,Peter,
+www.site2.com,,
+{'web':'test1.net'},Ana,
+['test2.net'],Ivan,
+[{'web':'test3.net'}],Sonja,

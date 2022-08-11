@@ -1,0 +1,22 @@
+{
+  "name": "csvman",
+  "version": "1.0.0",
+  "title": "CSV File",
+  "description": "Nodejs library which helps with CSV file management.",
+  "keywords": [
+    "csv",
+    "file",
+    "parse",
+    "parser"
+  ],
+  "author": "Saša Mikodanić",
+  "license": "AGPL-3.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:smikodanic/csvman.git"
+  },
+  "dependencies": {
+    "fs-extra": "^10.1.0"
+  }
+}

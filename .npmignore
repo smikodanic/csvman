@@ -1,0 +1,5 @@
+node_modules
+tests
+.editorconfig
+.eslintrc
+package-lock.json
