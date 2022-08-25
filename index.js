@@ -196,7 +196,7 @@ class CSV {
         for (const row_field of Object.keys(row)) {
           // update only row fields contained in the doc, other fields will remain same
           if (Object.keys(doc).includes(row_field)) {
-            row[row_field] = doc[row_field] || '';
+            row[row_field] = doc[row_field] !== undefined && doc[row_field] !== null ? doc[row_field] : '';
           }
         }
       }
