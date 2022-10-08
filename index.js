@@ -178,17 +178,20 @@ class CSV {
    * Find CSV row by query and update it with doc.
    * @param {object} query - find row by query: {name: 'John', age: 22}
    * @param {object} doc - update found rows with doc: {name: 'John Doe', age: 23, company: 'Cloud Ltd'}
+   * @param {boolean} upsert - if true insert new row if the rows are not found by the query
    * @return {{count:number, rows_updated: object[]}} - count of updated rows
    */
-  async updateRows(query, doc) {
+  async updateRows(query, doc, upsert) {
     const rows = await this.readRows(false) || [];
 
     let count = 0;
 
     // find & update rows
-    const rows_updated = rows.map(row => {
+    const tfs = [];
+    let rows_updated = rows.map(row => {
       // filter row to be updated
       const tf = this._searchLogic(row, query);
+      tfs.push(tf);
 
       // update a row
       if (tf) {
@@ -204,11 +207,18 @@ class CSV {
       return row;
     });
 
-    await this.writeRows(rows);
+    if (tfs.includes(true)) { // update
+      await this.writeRows(rows_updated);
+    } else if (!tfs.includes(true) && upsert) { // upsert
+      await this.appendRows([doc]);
+      count = 1;
+      rows_updated = await this.readRows(false);
+    }
 
     const update_res = { count, rows_updated };
     return update_res;
   }
+
 
 
 
