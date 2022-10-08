@@ -20,6 +20,9 @@ class CSV {
    * }
    */
   constructor(opts) {
+    if (!opts.filePath) { throw new Error('File path is not defined.'); }
+    if (!opts.fields) { throw new Error('CSV fields are not defined.'); }
+
     // NodeJS fs writeFile and appendFile options (https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback)
     this.filePath = opts.filePath;
     this.encoding = opts.encoding || 'utf8';
@@ -45,8 +48,6 @@ class CSV {
    * @return {void}
    */
   async createFile() {
-    if (!this.filePath) { throw new Error('File path is not defined.'); }
-    if (!this.fields) { throw new Error('CSV fields are not defined.'); }
     await fse.ensureFile(this.filePath);
   }
 
@@ -239,6 +240,35 @@ class CSV {
     });
 
     return rows_found;
+  }
+
+
+
+  /**
+   * Find CSV rows by the query and remove them.
+   * @param {object} query - find row by query: {name: 'John', age: 22}
+   * @return {object[]} - found rows i.e. removed rows
+   */
+  async removeRows(query) {
+    const rows = await this.readRows(true) || [];
+
+    let rows_notremoved;
+    let rows_removed = [];
+
+    if (!query || (query instanceof Object && Object.keys(query).length === 0)) { // when findRows() or findRows({}) is used
+      rows_notremoved = [];
+      rows_removed = rows;
+    } else {
+      rows_notremoved = rows.filter(row => {
+        const tf = this._searchLogic(row, query);
+        tf && rows_removed.push(row);
+        return !tf;
+      });
+    }
+
+    await this.writeRows(rows_notremoved);
+
+    return rows_removed;
   }
 
 

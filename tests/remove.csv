@@ -1,0 +1,8 @@
+url,name,age,obj
+example1.com,Pero Perić,23,{"num": 5}
+example2.com,Marko ' M.,24,{"num": 6}
+example3.com,John Doe,25,{"num": 7}
+example4.com,John Ron,55,{"num": 1}
+example3.com,Marko Doe,88,{"num": 50}
+roky.net,Roky Balboa,77,{'num':777}
+roky.net,Roky Balboa,77,{'num':777}
